@@ -12,16 +12,16 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Download Dependencies
-          command: /opt/code/gradlew androidDependencies
+          command: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Tests
-          command: /opt/code/gradlew lint test
+          command: gradlew lint test
       - store_artifacts:
-          path: /opt/code/app/build/reports
+          path: app/build/reports
           destination: reports
       - store_test_results:
-          path: /opt/code/app/build/test-results
+          path: app/build/test-results
