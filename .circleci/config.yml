@@ -68,3 +68,11 @@ jobs:
           command: ./gradlew connectedCheck -i
           environment:
             TERM: dumb
+      - run: chmod +777 reports
+      - store_artifacts:
+          path: reports
+          destination: reports
+      
+      - run: chmod +777 test-results
+      - store_test_results:
+          path: test-results
