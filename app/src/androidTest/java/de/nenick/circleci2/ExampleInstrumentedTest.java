@@ -23,4 +23,9 @@ public class ExampleInstrumentedTest {
 
         assertEquals("de.nenick.circleci2", appContext.getPackageName());
     }
+
+ @RunWith(AndroidJUnit4.class)
+ public void addition_isCorrect() throws Exception {
+        assertEquals(4, 2 + 2);
+    }   
 }
