@@ -13,8 +13,8 @@ jobs:
       - run:
          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
          command: sudo chmod +x ./gradlew
-      - run: add-apt-repository ppa:cwchien/gradle;apt-get update;apt upgrade gradle
-      - run: gradle dependencies
+      
+      - run: ./gradlelew dependencies
       - save_cache:
           paths:
             - ~/.gradle
