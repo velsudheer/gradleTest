@@ -20,12 +20,13 @@ public class ExampleInstrumentedTest {
     public void useAppContext() throws Exception {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
-
+        assertEquals("de.nenick.circleci2", appContext.getPackageName());
+    }
+    @Test
+    public void useAppContext2() throws Exception {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("de.nenick.circleci2", appContext.getPackageName());
     }
 
- @RunWith(AndroidJUnit4.class)
- public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }   
 }
