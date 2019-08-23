@@ -16,7 +16,12 @@ jobs:
          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
          command: sudo chmod +x ./gradlew
       
-      - run: ./gradlew androidDependencies
+      - run:
+          name: Build debug APK and release APK
+          command: |
+            ./gradlew :app:assembleDebug
+            ./gradlew :app:assembleDebugAndroidTest
+            
       - save_cache:
           paths:
             - ~/.gradle
