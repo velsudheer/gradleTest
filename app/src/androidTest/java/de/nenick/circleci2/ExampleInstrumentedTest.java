@@ -28,5 +28,13 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("de.nenick.circleci2", appContext.getPackageName());
     }
+    @Test
+    public void addition_isCorrect() throws Exception {
+        assertEquals(4, 2 + 2);
+    }
+    @Test
+    public void sub_isCorrect() throws Exception {
+        assertEquals(0, 2 - 2);
+    }
 
 }
