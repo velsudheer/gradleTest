@@ -59,13 +59,13 @@ jobs:
 
       - run:
           name: Unit testing
-          command: ./gradlew test -i
+          command: ./gradlew test
           environment:
             TERM: dumb
 
       - run:
           name: Instrumentation testing
-          command: ./gradlew connectedCheck -i
+          command: ./gradlew connectedCheck
           environment:
             TERM: dumb
       - run: chmod +777 reports
