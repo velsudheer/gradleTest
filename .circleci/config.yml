@@ -59,12 +59,12 @@ jobs:
 
       - run:
           name: Unit testing
-          command: ./gradlew test
+          command: ./gradlew test -i
           environment:
             TERM: dumb
 
       - run:
           name: Instrumentation testing
-          command: ./gradlew connectedCheck
+          command: ./gradlew connectedCheck -i
           environment:
             TERM: dumb
