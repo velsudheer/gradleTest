@@ -1,37 +1,70 @@
+# CircleCi configuration version
 version: 2
+
 jobs:
   build:
-    working_directory: ~/code
     docker:
-      - image: circleci/android:api-26-alpha
-      #- image: circleci/openjdk:8-jdk
-    environment:
-      JVM_OPTS: -Xmx3200m
+      # specific environment version to avoid incompatible updates
+      - image: bitriseio/docker-android:v2017_09_09-06_45-b744
+
+    working_directory: ~/workspace
+
     steps:
+
+      - run:
+          name: Lists installed targets
+          command: android list target
+          environment:
+            TERM: dumb
+
+      - run:
+          name: List available targets and other sdk modules
+          command: sdkmanager --list --include_obsolete --verbose
+          environment:
+            TERM: dumb
+
+      #- run:
+      #    name: Install custom system image
+      #    command: sdkmanager "system-images;android-23;google_apis;armeabi-v7a"
+      #    environment:
+      #      TERM: dumb
+
+      - run:
+          name: Create avd
+       #   command: echo no | avdmanager create avd -n testEmulator -k "system-images;android-23;google_apis;armeabi-v7a"
+          command: echo no | avdmanager create avd -n testEmulator -k "system-images;android-24;default;armeabi-v7a"
+          environment:
+            TERM: dumb
+
+      - run:
+          name: Start emulator
+          command: /opt/android-sdk-linux/emulator/emulator -avd testEmulator -no-audio -no-window
+          background: true
+          environment:
+            TERM: dumb
+
       - checkout
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run: cd /opt/android/sdk/build-tools/; ls
+
       - run:
-         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-         command: sudo chmod +x ./gradlew
-      
+          name: Wait for emulator
+          command: ./android-wait-for-boot.sh
+          environment:
+            TERM: dumb
+
       - run:
-          name: Build debug APK and release APK
-          command: |
-            ./gradlew :app:assembleDebug
-            ./gradlew :app:assembleDebugAndroidTest
-            
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          name: Remove lock screen
+          command: adb shell input keyevent 82
+          environment:
+            TERM: dumb
+
       - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
-          path: reports
-          destination: reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+          name: Unit testing
+          command: ./gradlew test
+          environment:
+            TERM: dumb
+
+      - run:
+          name: Instrumentation testing
+          command: ./gradlew connectedCheck
+          environment:
+            TERM: dumb
