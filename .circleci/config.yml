@@ -44,7 +44,7 @@ jobs:
             TERM: dumb
 
       - checkout
-
+      - run: chmod +777 android-wait-for-boot.sh
       - run:
           name: Wait for emulator
           command: ./android-wait-for-boot.sh
