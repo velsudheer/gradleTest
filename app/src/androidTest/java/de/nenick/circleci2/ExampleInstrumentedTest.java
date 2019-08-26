@@ -34,7 +34,7 @@ public class ExampleInstrumentedTest {
     }
     @Test
     public void sub_isCorrect() throws Exception {
-        assertEquals(1, 2 - 2);
+        assertEquals(0, 2 - 2);
     }
 
 }
